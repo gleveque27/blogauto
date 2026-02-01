@@ -12,8 +12,8 @@ export default async function ArticlePage({
     const { slug } = await params
     const supabase = await createClient()
 
-    // Query by slug instead of ID
-    const { data: post } = await supabase
+    // Attempt to find by slug first
+    let { data: post } = await supabase
         .from('posts')
         .select(`
             *,
@@ -24,7 +24,25 @@ export default async function ArticlePage({
         `)
         .eq('slug', slug)
         .eq('status', 'published')
-        .single()
+        .maybeSingle()
+
+    // If not found by slug, attempt to find by ID (UUID check)
+    if (!post && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug)) {
+        const { data: postById } = await supabase
+            .from('posts')
+            .select(`
+                *,
+                profiles (
+                    full_name,
+                    avatar_url
+                )
+            `)
+            .eq('id', slug)
+            .eq('status', 'published')
+            .maybeSingle()
+
+        post = postById
+    }
 
     if (!post) {
         notFound()
