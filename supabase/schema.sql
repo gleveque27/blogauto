@@ -35,6 +35,7 @@ create table public.posts (
   seo_score integer default 0,
   keywords text[],
   status text default 'draft' check (status in ('draft', 'published', 'archived')),
+  slug text unique,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );

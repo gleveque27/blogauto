@@ -25,8 +25,8 @@ export default async function PostDetailPage({
         notFound()
     }
 
-    // Link to the dynamic public route (must include /blog for Cloudflare routing)
-    const publicUrl = `/blog/articles/${id}`
+    // Link to the dynamic public route (using slug for SEO)
+    const publicUrl = `/blog/articles/${post.slug || id}`
 
     const handlePublish = async () => {
         'use server'

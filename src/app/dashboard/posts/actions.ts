@@ -78,10 +78,13 @@ export async function generateNewPost(formData: FormData) {
     const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(title + " professional business blog feature image")}.jpg?seed=${seed}&width=1024&height=1024`
     console.log("DEBUG: Generated image URL:", imageUrl)
 
+    const slug = slugify(title) || `post-${seed}`
+
     const { error: dbError } = await supabase.from('posts').insert({
         user_id: user.id,
         title,
         content: generatedContent,
+        slug,
         keywords,
         image_url: imageUrl,
         seo_score: seoScore,
@@ -139,11 +142,14 @@ export async function handleUpdatePost(id: string, formData: FormData) {
     const seed = Math.floor(Math.random() * 1000000)
     const imageUrl = post?.image_url || `https://image.pollinations.ai/prompt/${encodeURIComponent(title + " professional business blog feature image")}.jpg?seed=${seed}&width=1024&height=1024`
 
+    const slug = slugify(title) || `post-${id.substring(0, 8)}`
+
     const { error } = await supabase
         .from('posts')
         .update({
             title,
             content,
+            slug,
             keywords,
             image_url: imageUrl,
         })
