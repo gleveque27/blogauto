@@ -26,6 +26,7 @@ export default async function PostDetailPage({
     }
 
     // Link to the dynamic public route (using slug for SEO)
+    // If slug is missing or looks like a UUID, we provide it anyway as the page will query it
     const publicUrl = `/blog/articles/${post.slug || id}`
 
     const handlePublish = async () => {
