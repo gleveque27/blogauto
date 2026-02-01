@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/button'
 import { publishPost } from '../actions'
 import { PostImage } from '@/components/PostImage'
 import { slugify } from '@/lib/slugs'
-import fs from 'fs'
-import path from 'path'
 
 export default async function PostDetailPage({
     params,

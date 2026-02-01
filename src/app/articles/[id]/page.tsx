@@ -57,7 +57,7 @@ export default async function ArticlePage({
                             <img
                                 src={post.image_url}
                                 alt={post.title}
-                                class="w-full h-full object-cover"
+                                className="w-full h-full object-cover"
                             />
                         </div>
                     )}
