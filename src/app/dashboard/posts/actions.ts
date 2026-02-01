@@ -122,75 +122,9 @@ export async function publishPost(id: string) {
         return { error: error.message }
     }
 
-    // --- HTML Export Logic ---
-    try {
-        const slug = slugify(post.title) || `post-${id.substring(0, 8)}`
-
-        const htmlContent = `
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${post.title} | TelyLike</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .prose img { border-radius: 1rem; margin: 2rem 0; width: 100%; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-    </style>
-</head>
-<body class="bg-slate-50 text-slate-900 antialiased">
-    <nav class="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="/" class="font-bold text-xl text-indigo-600">TelyLike</a>
-            <div class="text-sm text-slate-500">Article Publié Automatiquement</div>
-        </div>
-    </nav>
-
-    <main class="max-w-3xl mx-auto px-4 py-12 md:py-20">
-        <header class="mb-12">
-            <div class="flex items-center gap-2 text-indigo-600 font-semibold text-sm uppercase tracking-wider mb-4">
-                <span>Article</span>
-                <span>•</span>
-                <span>${new Date(post.created_at).toLocaleDateString()}</span>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-8 leading-tight">${post.title}</h1>
-            
-            ${post.image_url ? `
-                <div class="aspect-video w-full rounded-3xl overflow-hidden shadow-2xl border bg-slate-200 mb-12">
-                    <img src="${post.image_url}" alt="${post.title}" class="w-full h-full object-cover">
-                </div>
-            ` : ''}
-        </header>
-
-        <article class="prose prose-lg prose-slate max-w-none">
-            ${marked.parse(post.content || '')}
-        </article>
-
-        <footer class="mt-20 pt-12 border-t text-center text-slate-500 text-sm">
-            <p>© ${new Date().getFullYear()} TelyLike. Tous droits réservés.</p>
-        </footer>
-    </main>
-</body>
-</html>`
-
-        const articlesDir = path.join(process.cwd(), 'public', 'articles')
-        if (!fs.existsSync(articlesDir)) {
-            fs.mkdirSync(articlesDir, { recursive: true })
-        }
-
-        const filePath = path.join(articlesDir, `${slug}.html`)
-        fs.writeFileSync(filePath, htmlContent)
-        console.log("DEBUG: HTML Exported to:", filePath)
-
-    } catch (exportError) {
-        console.error('Error exporting HTML:', exportError)
-        // We don't block the publish action if export fails, but we log it
-    }
-
     revalidatePath('/dashboard')
     revalidatePath(`/dashboard/posts/${id}`)
+    revalidatePath(`/articles/${id}`) // Revalidate the public article too
     return { success: true }
 }
 

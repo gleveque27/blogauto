@@ -27,10 +27,8 @@ export default async function PostDetailPage({
         notFound()
     }
 
-    // Check if public HTML file exists
-    const slug = slugify(post.title) || `post-${id.substring(0, 8)}`
-    const publicFilePath = path.join(process.cwd(), 'public', 'articles', `${slug}.html`)
-    const htmlExists = fs.existsSync(publicFilePath)
+    // Link to the dynamic public route
+    const publicUrl = `/articles/${id}`
 
     const handlePublish = async () => {
         'use server'
@@ -49,22 +47,11 @@ export default async function PostDetailPage({
                         <Link href={`/dashboard/posts/${id}/edit`}>Edit</Link>
                     </Button>
                     {post.status === 'published' && (
-                        <>
-                            {htmlExists ? (
-                                <Button asChild variant="outline" size="sm" className="text-indigo-600 border-indigo-200 hover:bg-indigo-50">
-                                    <a href={`/articles/${slug}.html`} target="_blank" rel="noopener noreferrer">
-                                        View Public Article
-                                    </a>
-                                </Button>
-                            ) : (
-                                <form action={handlePublish}>
-                                    <Button size="sm" variant="outline" className="text-amber-600 border-amber-200 hover:bg-amber-50 gap-2">
-                                        <AlertCircle className="h-4 w-4" />
-                                        Fix Public Link
-                                    </Button>
-                                </form>
-                            )}
-                        </>
+                        <Button asChild variant="outline" size="sm" className="text-indigo-600 border-indigo-200 hover:bg-indigo-50">
+                            <a href={publicUrl} target="_blank" rel="noopener noreferrer">
+                                View Public Article
+                            </a>
+                        </Button>
                     )}
                     {post.status !== 'published' && (
                         <form action={handlePublish}>
