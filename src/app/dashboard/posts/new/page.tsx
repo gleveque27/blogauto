@@ -58,6 +58,22 @@ export default async function NewPostPage({
                     />
                 </div>
 
+                <div className="space-y-2 border-t pt-4">
+                    <label htmlFor="imagePrompt" className="text-sm font-medium flex items-center gap-2">
+                        Image Prompt (Optional)
+                        <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 uppercase font-bold tracking-tight">Style Control</span>
+                    </label>
+                    <input
+                        id="imagePrompt"
+                        name="imagePrompt"
+                        placeholder="Example: futuristic office, neon lights, professional photography..."
+                        className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    />
+                    <p className="text-[11px] text-muted-foreground">
+                        If empty, the title will be used to generate the image.
+                    </p>
+                </div>
+
                 <div className="flex justify-end gap-3">
                     <Button asChild variant="outline" type="button">
                         <Link href="/dashboard">Cancel</Link>

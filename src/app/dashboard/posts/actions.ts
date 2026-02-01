@@ -13,6 +13,7 @@ export async function generateNewPost(formData: FormData) {
     const title = formData.get('title') as string
     const prompt = formData.get('content') as string
     const keywords = (formData.get('keywords') as string)?.split(',').map(k => k.trim())
+    const customImagePrompt = formData.get('imagePrompt') as string
 
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -73,7 +74,9 @@ export async function generateNewPost(formData: FormData) {
 
     // Use .jpg extension and a random seed for much faster and more reliable responses
     const seed = Math.floor(Math.random() * 1000000)
-    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(title + " professional business blog feature image")}.jpg?seed=${seed}&width=1024&height=1024`
+    const finalImagePrompt = customImagePrompt ? customImagePrompt : (title + " professional business blog feature image")
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalImagePrompt)}.jpg?seed=${seed}&width=1024&height=1024`
+    console.log("DEBUG: Generated image URL content:", finalImagePrompt)
     console.log("DEBUG: Generated image URL:", imageUrl)
 
     const slug = slugify(title) || `post-${seed}`
