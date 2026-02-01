@@ -4,8 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { GoogleGenerativeAI } from "@google/generative-ai"
-import fs from 'fs'
-import path from 'path'
 import { marked } from 'marked'
 import { slugify } from '@/lib/slugs'
 

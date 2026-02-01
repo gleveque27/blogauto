@@ -5,7 +5,6 @@ import { ArrowLeft, Calendar, Tag, ShieldCheck, AlertCircle } from 'lucide-react
 import { Button } from '@/components/ui/button'
 import { publishPost } from '../actions'
 import { PostImage } from '@/components/PostImage'
-import { slugify } from '@/lib/slugs'
 
 export default async function PostDetailPage({
     params,
