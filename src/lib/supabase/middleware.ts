@@ -33,12 +33,15 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
+    const isAuthPath =
+        request.nextUrl.pathname.endsWith('/login') ||
+        request.nextUrl.pathname.endsWith('/register') ||
+        request.nextUrl.pathname.includes('/auth')
+
     if (
         !user &&
-        !request.nextUrl.pathname.startsWith('/login') &&
-        !request.nextUrl.pathname.startsWith('/register') &&
-        !request.nextUrl.pathname.startsWith('/auth') &&
-        request.nextUrl.pathname.startsWith('/dashboard')
+        !isAuthPath &&
+        request.nextUrl.pathname.includes('/dashboard')
     ) {
         const url = request.nextUrl.clone()
         url.pathname = '/login'

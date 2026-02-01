@@ -18,6 +18,7 @@ export async function login(formData: FormData) {
         redirect('/login?error=' + encodeURIComponent(error.message))
     }
 
+    // Next.js handles the /blog prefix automatically with redirect()
     redirect('/dashboard')
 }
 
