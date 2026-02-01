@@ -1,0 +1,129 @@
+import { createClient } from '@/lib/supabase/server'
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { ArrowLeft, Calendar, Tag, ShieldCheck, AlertCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { publishPost } from '../actions'
+import { PostImage } from '@/components/PostImage'
+import { slugify } from '@/lib/slugs'
+import fs from 'fs'
+import path from 'path'
+
+export default async function PostDetailPage({
+    params,
+}: {
+    params: Promise<{ id: string }>
+}) {
+    const { id } = await params
+    const supabase = await createClient()
+
+    const { data: post } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('id', id)
+        .single()
+
+    if (!post) {
+        notFound()
+    }
+
+    // Check if public HTML file exists
+    const slug = slugify(post.title) || `post-${id.substring(0, 8)}`
+    const publicFilePath = path.join(process.cwd(), 'public', 'articles', `${slug}.html`)
+    const htmlExists = fs.existsSync(publicFilePath)
+
+    const handlePublish = async () => {
+        'use server'
+        await publishPost(id)
+    }
+
+    return (
+        <div className="max-w-4xl mx-auto w-full space-y-8 py-6">
+            <div className="flex items-center justify-between">
+                <Link href="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Dashboard
+                </Link>
+                <div className="flex gap-2">
+                    <Button asChild variant="outline" size="sm">
+                        <Link href={`/dashboard/posts/${id}/edit`}>Edit</Link>
+                    </Button>
+                    {post.status === 'published' && (
+                        <>
+                            {htmlExists ? (
+                                <Button asChild variant="outline" size="sm" className="text-indigo-600 border-indigo-200 hover:bg-indigo-50">
+                                    <a href={`/articles/${slug}.html`} target="_blank" rel="noopener noreferrer">
+                                        View Public Article
+                                    </a>
+                                </Button>
+                            ) : (
+                                <form action={handlePublish}>
+                                    <Button size="sm" variant="outline" className="text-amber-600 border-amber-200 hover:bg-amber-50 gap-2">
+                                        <AlertCircle className="h-4 w-4" />
+                                        Fix Public Link
+                                    </Button>
+                                </form>
+                            )}
+                        </>
+                    )}
+                    {post.status !== 'published' && (
+                        <form action={handlePublish}>
+                            <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">Publish</Button>
+                        </form>
+                    )}
+                </div>
+            </div>
+
+            <div className="space-y-4">
+                <div className="flex items-center gap-2 text-xs font-medium text-indigo-600 uppercase tracking-wider">
+                    <ShieldCheck className="h-3 w-3" />
+                    {post.status}
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{post.title}</h1>
+
+                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground border-b pb-6">
+                    <div className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        <span suppressHydrationWarning>{new Date(post.created_at).toLocaleDateString()}</span>
+                    </div>
+                    {post.keywords && post.keywords.length > 0 && (
+                        <div className="flex items-center gap-2">
+                            <Tag className="h-4 w-4" />
+                            <div className="flex gap-1">
+                                {post.keywords.map((k: string, i: number) => (
+                                    <span key={i} className="bg-muted px-2 py-0.5 rounded text-xs">
+                                        {k}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    <div className="ml-auto font-semibold text-foreground">
+                        SEO Score: <span className="text-green-600">{post.seo_score}%</span>
+                    </div>
+                </div>
+            </div>
+
+            {post.image_url ? (
+                <PostImage src={post.image_url} alt={post.title} />
+            ) : (
+                <div className="aspect-video w-full rounded-2xl border border-dashed flex items-center justify-center bg-muted/30 text-muted-foreground text-sm">
+                    No image associated with this post. Edit to generate one.
+                </div>
+            )}
+
+            <article className="prose prose-indigo max-w-none dark:prose-invert">
+                {/* We assume content is stored as text/markdown */}
+                <div className="whitespace-pre-wrap leading-relaxed text-lg">
+                    {post.content || "No content generated for this article yet."}
+                </div>
+            </article>
+
+            <div className="pt-12 border-t">
+                <p className="text-sm text-muted-foreground text-center">
+                    Article generated by TelyLike AI.
+                </p>
+            </div>
+        </div>
+    )
+}
