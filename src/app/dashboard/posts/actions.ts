@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { marked } from 'marked'
 import { slugify } from '@/lib/slugs'
+import { generateAndUploadImage } from '@/lib/image-generation'
 
 export async function generateNewPost(formData: FormData) {
     const supabase = await createClient()
@@ -72,12 +73,23 @@ export async function generateNewPost(formData: FormData) {
         redirect(`/dashboard/posts/new?error=${encodeURIComponent("AI Error: " + errorMsg + ". Check if your key is from AI Studio (Gemini API) and not Vertex AI.")}`)
     }
 
-    // Use .jpg extension and a random seed for much faster and more reliable responses
+    // IMAGE GENERATION WORKFLOW: Hugging Face → ImgBB
+    let imageUrl = ""
     const seed = Math.floor(Math.random() * 1000000)
     const finalImagePrompt = customImagePrompt ? customImagePrompt : (title + " professional business blog feature image")
-    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalImagePrompt)}.jpg?seed=${seed}&width=1024&height=1024`
-    console.log("DEBUG: Generated image URL content:", finalImagePrompt)
-    console.log("DEBUG: Generated image URL:", imageUrl)
+
+    console.log("DEBUG: Starting image generation workflow...")
+    const imageResult = await generateAndUploadImage(finalImagePrompt)
+
+    if (imageResult.success && imageResult.imageUrl) {
+        imageUrl = imageResult.imageUrl
+        console.log("DEBUG: Image generation successful, URL:", imageUrl)
+    } else {
+        // Fallback to Pollinations AI if Hugging Face/ImgBB workflow fails
+        console.warn("DEBUG: Image generation failed, falling back to Pollinations AI")
+        console.warn("DEBUG: Error:", imageResult.error)
+        imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalImagePrompt)}.jpg?seed=${seed}&width=1024&height=1024`
+    }
 
     const slug = slugify(title) || `post-${seed}`
 
