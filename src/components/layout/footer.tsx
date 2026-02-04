@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Zap } from "lucide-react"
+import { CurrentYear } from "@/components/current-year"
 
 export default function Footer() {
     return (
@@ -11,7 +12,7 @@ export default function Footer() {
                             <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
                                 <Zap className="h-5 w-5 fill-current" />
                             </div>
-                            <span>TelyLike</span>
+                            <span>Noticias</span>
                         </div>
                         <p className="text-muted-foreground text-sm max-w-xs">
                             Autonomous AI agent for B2B content marketing. Autopilot your growth.
@@ -43,9 +44,6 @@ export default function Footer() {
                             <li><Link href="#" className="hover:text-foreground">Terms</Link></li>
                         </ul>
                     </div>
-                </div>
-                <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
-                    © {new Date().getFullYear()} TelyLike. All rights reserved.
                 </div>
             </div>
         </footer>

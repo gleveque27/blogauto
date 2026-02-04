@@ -23,7 +23,7 @@ async function generateImageWithHuggingFace(prompt) {
     console.log('📝 Prompt:', prompt)
 
     const response = await fetch(
-        'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1',
+        'https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell',
         {
             method: 'POST',
             headers: {

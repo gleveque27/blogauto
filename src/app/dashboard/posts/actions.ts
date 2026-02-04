@@ -78,17 +78,18 @@ export async function generateNewPost(formData: FormData) {
     const seed = Math.floor(Math.random() * 1000000)
     const finalImagePrompt = customImagePrompt ? customImagePrompt : (title + " professional business blog feature image")
 
-    console.log("DEBUG: Starting image generation workflow...")
+    console.log("DEBUG: Starting image generation workflow with Replicate...")
     const imageResult = await generateAndUploadImage(finalImagePrompt)
 
     if (imageResult.success && imageResult.imageUrl) {
         imageUrl = imageResult.imageUrl
-        console.log("DEBUG: Image generation successful, URL:", imageUrl)
+        console.log("DEBUG: Replicate image generation successful, URL:", imageUrl)
     } else {
-        // Fallback to Pollinations AI if Hugging Face/ImgBB workflow fails
-        console.warn("DEBUG: Image generation failed, falling back to Pollinations AI")
+        // Fallback: Use Pollinations AI with custom prompt
+        console.warn("DEBUG: Replicate failed, using Pollinations AI fallback")
         console.warn("DEBUG: Error:", imageResult.error)
-        imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalImagePrompt)}.jpg?seed=${seed}&width=1024&height=1024`
+        // Note: Pollinations AI will generate based on your custom prompt
+        imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalImagePrompt)}?width=1024&height=1024&seed=${seed}&nologo=true`
     }
 
     const slug = slugify(title) || `post-${seed}`

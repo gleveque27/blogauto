@@ -56,7 +56,7 @@ export default function Home() {
         <section id="features" className="py-20 bg-slate-50 dark:bg-slate-950/50">
           <div className="container max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">Why choose TelyLike?</h2>
+              <h2 className="text-3xl font-bold tracking-tight mb-4">Why choose Noticias?</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 We don't just write text. We build a comprehensive content strategy that drives organic growth without the agency price tag.
               </p>

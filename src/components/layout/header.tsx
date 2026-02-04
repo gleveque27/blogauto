@@ -10,7 +10,7 @@ export default function Header() {
                     <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
                         <Zap className="h-5 w-5 fill-current" />
                     </div>
-                    <span>TelyLike</span>
+                    <span>Noticias</span>
                 </div>
 
                 <nav className="hidden md:flex gap-6 text-sm font-medium">

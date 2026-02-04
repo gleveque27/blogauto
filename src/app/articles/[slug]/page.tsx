@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { Calendar, User } from 'lucide-react'
 import { marked } from 'marked'
 import Link from 'next/link'
+import { CurrentYear } from '@/components/current-year'
 
 export default async function ArticlePage({
     params,
@@ -53,7 +54,7 @@ export default async function ArticlePage({
             <nav className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
                     <Link href="/" className="font-bold text-xl text-indigo-600">
-                        TelyLike
+                        Noticias
                     </Link>
                     <div className="text-sm text-slate-500">Article Publié</div>
                 </div>
@@ -90,8 +91,8 @@ export default async function ArticlePage({
                             )}
                         </div>
                         <div>
-                            <div className="text-sm font-semibold">{post.profiles?.full_name || 'Expert TelyLike'}</div>
-                            <div className="text-xs text-slate-500">AI Content Strategist</div>
+                            <div className="text-sm font-semibold">{post.profiles?.full_name || 'Expert Noticias'}</div>
+                            <div className="text-xs text-slate-500">AI Content</div>
                         </div>
                     </div>
                 </header>
@@ -103,9 +104,7 @@ export default async function ArticlePage({
                     />
                 </article>
 
-                <footer className="mt-20 pt-12 border-t text-center text-slate-500 text-sm">
-                    <p>© {new Date().getFullYear()} TelyLike. Tous droits réservés.</p>
-                </footer>
+
             </main>
         </div>
     )
