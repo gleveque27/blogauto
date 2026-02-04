@@ -98,9 +98,15 @@ export default async function ArticlePage({
                 </header>
 
                 <article className="prose prose-lg prose-slate max-w-none prose-indigo">
+                    {/* Debug: Show if content exists */}
+                    {!post.content && (
+                        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+                            ⚠️ No content available for this article
+                        </div>
+                    )}
                     <div
-                        className="leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: marked.parse(post.content || '') }}
+                        className="leading-relaxed text-slate-700"
+                        dangerouslySetInnerHTML={{ __html: marked.parse(post.content || 'No content') }}
                     />
                 </article>
 
