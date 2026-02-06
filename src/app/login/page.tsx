@@ -28,12 +28,6 @@ export default function LoginPage() {
                     </div>
                     <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">Sign In</Button>
                 </form>
-
-                <div className="px-8 text-center text-sm text-muted-foreground">
-                    <Link href="/register" className="hover:text-brand underline underline-offset-4">
-                        Don&apos;t have an account? Sign Up
-                    </Link>
-                </div>
             </div>
         </div>
     )

@@ -20,11 +20,8 @@ export default function Header() {
                 </nav>
 
                 <div className="flex items-center gap-4">
-                    <Link href="/login" className="text-sm font-medium hover:text-indigo-600 hidden sm:block">
-                        Log in
-                    </Link>
-                    <Link href="/register" className="inline-flex h-9 items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
-                        Get Started
+                    <Link href="/login" className="inline-flex h-9 items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                        Se connecter
                     </Link>
                 </div>
             </div>

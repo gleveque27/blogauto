@@ -1,37 +1,26 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { Zap } from "lucide-react"
-import { signup } from "@/app/auth/actions"
 
 export default function RegisterPage() {
     return (
         <div className="flex h-screen w-full items-center justify-center px-4">
-            <div className="mx-auto w-full max-w-[350px] space-y-6">
-                <div className="flex flex-col items-center space-y-2 text-center">
-                    <div className="h-10 w-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white mb-2">
-                        <Zap className="h-6 w-6 fill-current" />
+            <div className="mx-auto w-full max-w-[450px] space-y-6">
+                <div className="flex flex-col items-center space-y-4 text-center">
+                    <div className="h-12 w-12 rounded-lg bg-indigo-600 flex items-center justify-center text-white mb-2">
+                        <Zap className="h-8 w-8 fill-current" />
                     </div>
                     <h1 className="text-2xl font-semibold tracking-tight">
-                        Create an account
+                        Inscriptions fermées
                     </h1>
-                    <p className="text-sm text-muted-foreground">
-                        Enter your email below to create your account
+                    <p className="text-sm text-muted-foreground max-w-sm">
+                        Les nouvelles inscriptions sont actuellement désactivées. 
+                        Si vous avez déjà un compte, veuillez vous connecter.
                     </p>
-                </div>
-
-                <form action={signup} className="space-y-4">
-                    <div className="space-y-2">
-                        <input name="email" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" placeholder="name@example.com" type="email" required />
-                    </div>
-                    <div className="space-y-2">
-                        <input name="password" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" placeholder="Password" type="password" required />
-                    </div>
-                    <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">Sign Up</Button>
-                </form>
-
-                <div className="px-8 text-center text-sm text-muted-foreground">
-                    <Link href="/login" className="hover:text-brand underline underline-offset-4">
-                        Already have an account? Sign In
+                    <Link 
+                        href="/login"
+                        className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-indigo-600 text-white hover:bg-indigo-700 h-10 px-6 py-2 w-full mt-4"
+                    >
+                        Se connecter
                     </Link>
                 </div>
             </div>
